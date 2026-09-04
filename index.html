@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption/Decryption Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <h1>SecureText</h1>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Algorithm Selector -->
+        <section class="algorithm-section">
+            <div class="algorithm-selector">
+                <label for="algorithm" class="label">Encryption Algorithm</label>
+                <div class="select-wrapper">
+                    <select id="algorithm" class="select">
+                        <option value="aes">AES-256 (Advanced Encryption Standard)</option>
+                        <option value="caesar">Caesar Cipher</option>
+                        <option value="base64">Base64 Encoding</option>
+                        <option value="rot13">ROT13</option>
+                        <option value="reverse">Reverse Text</option>
+                        <option value="xor">XOR Cipher</option>
+                    </select>
+                </div>
+                <div class="algorithm-description" id="algorithmDescription">
+                    <strong>AES-256:</strong> Military-grade encryption using a 256-bit key. Requires a password for encryption/decryption.
+                </div>
+            </div>
+        </section>
+
+        <!-- Key/Password Input (for algorithms that require it) -->
+        <section class="key-section" id="keySection">
+            <div class="key-input-wrapper">
+                <label for="encryptionKey" class="label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                    </svg>
+                    Password / Key
+                </label>
+                <div class="password-input-group">
+                    <input type="password" id="encryptionKey" class="input" placeholder="Enter password for encryption/decryption">
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Show/hide password">
+                        <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <span class="hint" id="keyHint">Required for AES and XOR encryption</span>
+            </div>
+        </section>
+
+        <!-- Caesar Cipher Shift (for Caesar Cipher only) -->
+        <section class="shift-section" id="shiftSection">
+            <div class="shift-input-wrapper">
+                <label for="caesarShift" class="label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="5 9 12 3 19 9"></polyline>
+                        <line x1="12" y1="21" x2="12" y2="3"></line>
+                    </svg>
+                    Shift Value
+                </label>
+                <input type="number" id="caesarShift" class="input" value="3" min="1" max="25">
+                <span class="hint">Number of positions to shift (1-25)</span>
+            </div>
+        </section>
+
+        <!-- Main Content - Two Columns -->
+        <main class="main-content">
+            <!-- Encryption Panel -->
+            <section class="panel encryption-panel">
+                <div class="panel-header">
+                    <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <h2>Encrypt</h2>
+                </div>
+                
+                <div class="input-group">
+                    <div class="input-header">
+                        <label for="encryptInput" class="sr-only">Text to encrypt</label>
+                        <span class="character-count" id="encryptCharCount">0 characters</span>
+                    </div>
+                    <textarea 
+                        id="encryptInput" 
+                        class="textarea" 
+                        placeholder="Enter text to encrypt..."
+                        rows="6"
+                    ></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="encryptBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        Encrypt
+                    </button>
+                    <button class="btn btn-secondary" id="clearEncryptBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Clear
+                    </button>
+                </div>
+
+                <div class="output-group">
+                    <div class="input-header">
+                        <label for="encryptOutput" class="sr-only">Encrypted result</label>
+                        <span class="output-label">Encrypted Result</span>
+                    </div>
+                    <div class="output-wrapper">
+                        <textarea 
+                            id="encryptOutput" 
+                            class="textarea output" 
+                            placeholder="Encrypted text will appear here..."
+                            rows="6"
+                            readonly
+                        ></textarea>
+                        <div class="output-actions">
+                            <button class="action-btn" id="copyEncryptBtn" title="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="btn-text">Copy</span>
+                            </button>
+                            <button class="action-btn" id="downloadEncryptBtn" title="Download as .txt">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span class="btn-text">Download</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decryption Panel -->
+            <section class="panel decryption-panel">
+                <div class="panel-header">
+                    <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                    </svg>
+                    <h2>Decrypt</h2></l></K>
+                </div>
+                
+                <div class="input-group">
+                    <div class="input-header">
+                        <label for="decryptInput" class="sr-only">Text to decrypt</label>
+                        <span class="character-count" id="decryptCharCount">0 characters</span>
+                    </div>
+                    <textarea 
+                        id="decryptInput" 
+                        class="textarea" 
+                        placeholder="Enter text to decrypt..."
+                        rows="6"
+                    ></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="decryptBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                        </svg>
+                        Decrypt
+                    </button>
+                    <button class="btn btn-secondary" id="clearDecryptBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Clear
+                    </button>
+                </div>
+
+                <div class="output-group">
+                    <div class="input-header">
+                        <label for="decryptOutput" class="sr-only">Decrypted result</label>
+                        <span class="output-label">Decrypted Result</span>
+                    </div>
+                    <div class="output-wrapper">
+                        <textarea 
+                            id="decryptOutput" 
+                            class="textarea output" 
+                            placeholder="Decrypted text will appear here..."
+                            rows="6"
+                            readonly
+                        ></textarea>
+                        <div class="output-actions">
+                            <button class="action-btn" id="copyDecryptBtn" title="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span class="btn-text">Copy</span>
+                            </button>
+                            <button class="action-btn" id="downloadDecryptBtn" title="Download as .txt">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span class="btn-text">Download</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>All encryption/decryption happens client-side. Your data never leaves your browser.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <span>Processing...</span>
+    </div>
+
+    <script src="lib/crypto-js.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
