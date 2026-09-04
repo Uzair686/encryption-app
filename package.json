@@ -1,17 +1,29 @@
 {
   "name": "encryption-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A modern browser-based encryption and decryption toolkit with AES, Caesar, Base64, ROT13, XOR, and reverse text tools.",
   "main": "script.js",
+  "homepage": "https://uzair686.github.io/encryption-app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Uzair686/encryption-app.git"
+  },
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --check script.js",
+    "start": "npx http-server . -p 8000"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "encryption",
+    "decryption",
+    "security",
+    "javascript",
+    "web-app"
+  ],
+  "author": "Uzair686",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "playwright": "^1.58.2"
