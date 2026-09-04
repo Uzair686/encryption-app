@@ -1,8 +1,10 @@
 # SecureText
 
-A modern browser-based encryption and decryption toolkit built with HTML, CSS, and JavaScript.
+Privacy-first encryption toolkit for modern browser-based text security.
 
-SecureText lets you encrypt and decrypt text using multiple algorithms directly in the browser, without sending your data to a server. It is designed for quick experimentation, learning, and lightweight privacy-friendly text processing.
+## Repository Overview
+
+SecureText is a lightweight web app for encrypting and decrypting text using multiple algorithms directly in the browser. It is built for learning, quick experimentation, and safe local processing without sending private data to a server.
 
 ## Live Preview
 
@@ -23,9 +25,9 @@ https://uzair686.github.io/encryption-app/
 - Copy and download output actions
 - Client-side processing for privacy-focused usage
 
-## Screenshot
+## Screenshot Preview
 
-![SecureText App Preview](assets/screenshot.svg)
+![SecureText app interface preview](assets/screenshot.svg)
 
 ## Getting Started
 
